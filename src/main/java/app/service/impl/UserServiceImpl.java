@@ -124,6 +124,23 @@ public class UserServiceImpl extends BaseServiceImpl implements UserService {
 			throw e;
 		}
 	}
+	
+	@Override
+	public boolean checkPassword(String currentPass, String checkPass) {
+		return passwordEncoder.matches(currentPass, checkPass);
+	}
+
+	@Override
+	public boolean updatePassword(User user, String newPass) {
+		try {
+			user.setPassword(passwordEncoder.encode(newPass));
+			User userNew = getUserDAO().saveOrUpdate(user);
+			return userNew != null;
+		} catch (Exception e) {
+			LOGGER.error(e);
+			throw e;
+		}
+	}
 
 	@Override
 	public boolean updateUser(User userView, User user) {

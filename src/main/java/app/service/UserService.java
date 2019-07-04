@@ -20,5 +20,9 @@ public interface UserService extends BaseService<Integer, User> {
 	boolean isEmailExist(String email);
 	
 	boolean updateUser(User userView, User user);
+
+	boolean checkPassword(String currentPass, String checkPass);
+	
+	boolean updatePassword(User user, String newPass);
 	
 }

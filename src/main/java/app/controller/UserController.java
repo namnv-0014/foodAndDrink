@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;	
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import app.bean.UserInfo;
@@ -36,6 +36,8 @@ import validate.UserValidationEdit;
 @PropertySource("classpath:constants.properties")
 public class UserController {
 	private static final Logger logger = Logger.getLogger(UserController.class);
+	private static final int ADMIN = 0;
+	private static final int USER = 1;
 
 	@Autowired
 	private UserService userService;
@@ -78,8 +80,12 @@ public class UserController {
 		User user = getUserService().findByEmailAndPassword(usermail, password.trim());
 		if (user != null) {
 			HttpSession session = request.getSession();
-			redirectAttributes.addFlashAttribute("msg", "Welcome "+user.getName().toUpperCase()+"!");
+			redirectAttributes.addFlashAttribute("msg", "Welcome " + user.getName().toUpperCase() + "!");
 			session.setAttribute("currentUser", user.getId());
+			if (user.getRole() == ADMIN)
+				session.setAttribute("roleUser", ADMIN);
+			else
+				session.setAttribute("roleUser", USER);
 			return "redirect:/";
 		} else {
 			model.addAttribute("error", login_error);
@@ -104,14 +110,14 @@ public class UserController {
 			model.addAttribute("user", user);
 			return "users/user";
 		}
-
 		model.addAttribute("css", danger);
 		model.addAttribute("msg", msg_nouserfound);
 		return "error";
 	}
 
 	@PostMapping("/registerProcess")
-	public String register(@ModelAttribute("userInfo") UserInfo userInfo, BindingResult result, Model model, final RedirectAttributes redirectAttributes) {
+	public String register(@ModelAttribute("userInfo") UserInfo userInfo, BindingResult result, Model model,
+			final RedirectAttributes redirectAttributes) {
 		UserValidation validation = new UserValidation();
 		validation.validate(userInfo, result);
 		if (result.hasErrors()) {
@@ -131,9 +137,10 @@ public class UserController {
 		modelMap.addAttribute("userInfo", new UserInfo());
 		return "register";
 	}
-	
+
 	@GetMapping("/users")
-	public String index(Model model, @RequestParam("search") Optional<String> search, @RequestParam("page") Optional<Integer> page, @RequestParam("size") Optional<Integer> size) {
+	public String index(Model model, @RequestParam("search") Optional<String> search,
+			@RequestParam("page") Optional<Integer> page, @RequestParam("size") Optional<Integer> size) {
 		int currentPage = page.orElse(defaultPage);
 		int pageSize = size.orElse(defaultPageSize);
 		String userName = search.orElse("");
@@ -151,7 +158,7 @@ public class UserController {
 		}
 		return "users/users";
 	}
-	
+
 	@GetMapping("users/{id}/delete")
 	public String deleteUser(@PathVariable("id") Integer id, final RedirectAttributes redirectAttributes) {
 		logger.info("delete user");
@@ -164,7 +171,7 @@ public class UserController {
 		}
 		return "redirect:/users";
 	}
-	
+
 	@GetMapping("users/{id}/edit")
 	public String editUser(@PathVariable("id") Integer id, Model model) {
 		logger.info("edit user");
@@ -177,9 +184,10 @@ public class UserController {
 		model.addAttribute("msg", msg_nouserfound);
 		return "error";
 	}
-	
+
 	@PostMapping("/update")
-	public String editUser(@ModelAttribute("user") User userView, BindingResult result, Model model, final RedirectAttributes redirectAttributes) {
+	public String editUser(@ModelAttribute("user") User userView, BindingResult result, Model model,
+			final RedirectAttributes redirectAttributes) {
 		logger.info("edit user");
 		UserValidationEdit validation = new UserValidationEdit();
 		validation.validate(userView, result);
@@ -195,6 +203,21 @@ public class UserController {
 			redirectAttributes.addFlashAttribute("msg", msg_updatefail);
 		}
 		return "redirect:/users/" + user.getId();
+	}
+
+	@PostMapping("/changePassProcess")
+	public String changePassProcess(@RequestParam("oldPass") String oldPass, @RequestParam("newPass") String newPass,
+			@RequestParam("confirmPass") String confirmPass, HttpServletRequest request, final RedirectAttributes redirectAttributes) {
+		HttpSession session = request.getSession();
+		int currentUserId = Integer.parseInt(session.getAttribute("currentUser").toString());
+		User currentUser = userService.findById(currentUserId);
+		if (userService.checkPassword(oldPass, currentUser.getPassword())) {
+			if (newPass.equals(confirmPass)) {
+				userService.updatePassword(currentUser, newPass);
+				return "redirect:/logout";
+			}
+		}
+		return null;
 	}
 
 }

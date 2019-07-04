@@ -2,9 +2,8 @@
 <html xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="fragments/layout">
-	
 <title>Menu</title>
-	
+
 <div layout:fragment="content">
 	<!-- Breadcrumbs -->
 	<section class="breadcrumbs-custom-inset">
@@ -20,7 +19,7 @@
 				style="background-image: url(/foodAndDrink/assets/images/bg-breadcrumbs.jpg);"></div>
 		</div>
 	</section>
-	
+
 	<!-- Base typography-->
 	<section class="section section-sm section-first bg-default text-left">
 		<div class="container">
@@ -125,6 +124,33 @@
 						</article>
 					</div>
 				</div>
+
+
+				<!-- Trigger/Open The Modal -->
+				<button id="myBtn">Open Modal</button>
+
+				<!-- The Modal -->
+				<div id="myModal" class="modal">
+
+					<!-- Modal content -->
+					<div class="modal-content">
+						<span class="close">&times;</span>
+						<form th:action="@{/changePassProcess}"
+								class="form-container" method="Post">
+							<h1>Change Password</h1>
+
+							<input type="password" placeholder="Enter Old Password" name="oldPass" required> 
+							<input type="password" placeholder="Enter New Password" name="newPass" required> 
+								
+							<input type="password"	placeholder="Enter Confirm Password" name="confirmPass" required>
+
+							<button type="submit" class="btn">Submit</button>
+						</form>
+					</div>
+
+				</div>
+				<script type="text/javascript" th:src="@{/assets/js/popupForm.js}"></script>
+
 			</div>
 		</div>
 	</section>

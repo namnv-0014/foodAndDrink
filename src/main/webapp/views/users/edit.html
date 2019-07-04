@@ -5,103 +5,143 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Edit User</title>
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/assets/css/user-profile.css}">
+<link
+	href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css"
+	rel="stylesheet">
+<link rel="icon" th:href="@{/assets/images/logo.png}"
+	type="image/x-icon">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/assets/css/login_form.css}">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/assets/css/changePass.css}">
 
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
-<link rel="stylesheet" type="text/css" th:href="@{/assets/css/user-profile.css}">
-<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
-<link rel="icon" th:href="@{/assets/images/logo.png}" type="image/x-icon">
-<link rel="stylesheet" type="text/css" th:href="@{/assets/css/login_form.css}">
-
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+<script
+	src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
 <script th:src="@{/assets/js/edit-user.js}"></script>
 </head>
 
 <body>
 	<div class="container emp-profile">
-
 		<form th:action="@{/update}" th:object="${user}" method="Post">
 			<div class="row">
-			
-				<div th:if="${msg != null}" th:class="'alert alert-' + ${css} + ' alert-dismissible alert-autocloseable-' + ${css}" role="alert">
-	       			<strong th:text="${msg}"></strong>
+
+				<div th:if="${msg != null}"
+					th:class="'alert alert-' + ${css} + ' alert-dismissible alert-autocloseable-' + ${css}"
+					role="alert">
+					<strong th:text="${msg}"></strong>
 				</div>
-				
-					<div class="col-md-4">
-						
-						<div class="panel panel-default">
-							<div class="panel-body">
-								<h3 class="panel-title pull-left ml-5">Your photo</h3>
-								<br> <br>
-								<div align="center">
-								
+
+				<div class="col-md-4">
+
+					<div class="panel panel-default">
+						<div class="panel-body">
+							<h3 class="panel-title pull-left ml-5">Your photo</h3>
+							<br> <br>
+							<div align="center">
+
 								<div class="profile-img">
 									<div class="col-lg-12 col-md-12">
-										<input type="hidden" th:field="*{avatar}" class="avatar" id="avatar" autofocus="true" />
-										<img class="img-thumbnail img-responsive avatar"
-											th:src="*{avatar}"
-											width="300px" height="300px">
+										<input type="hidden" th:field="*{avatar}" class="avatar"
+											id="avatar" autofocus="true" /> <img
+											class="img-thumbnail img-responsive avatar"
+											th:src="*{avatar}" width="300px" height="300px">
 									</div>
 									<div class="col-lg-12 col-md-12">
 										<div class="file btn btn-lg btn-primary">
 											<i class="fa fa-upload" aria-hidden="true"></i> Change
-											profile photo!<input type="file" name="file" class="file-upload"/>
+											profile photo!<input type="file" name="file"
+												class="file-upload" />
 										</div>
 									</div>
 								</div>
-								
-								</div>
+
 							</div>
 						</div>
 					</div>
-		
-					<div class="col-md-6">
-						<div class="panel panel-default">
-							<div class="panel-body">
-								<h3 class="panel-title pull-left">Your Info</h3>
-								<br> <br>
-								
-									<div class="mb-2">
-										<label for="Name">Name</label> 
-										<input type="text" th:field="*{name}" class="form-control" id="Name" autofocus="true" >
-									</div> 
-									
-									<div>
-										<span class= "errors-notification" th:if="${#fields.hasErrors('email')}"
-											th:errors="*{email}"></span>
-									</div>
-									<div class="mb-2"> 
-										<label for="Email">Email</label> 
-										<input type="text" th:field="*{email}" class="form-control" id="Email" autofocus="true" >
-									</div>
-									
-									<div class="mb-2">
-										<label for="Address">Address</label> 
-										<input type="text" th:field="*{address}" class="form-control" id="Address" autofocus="true" />
-									</div>
-									
-									<input type="hidden" th:field="*{id}">
-									<input type="hidden" th:field="*{password}">
-								
+				</div>
+
+				<div class="col-md-6">
+					<div class="panel panel-default">
+						<div class="panel-body">
+							<h3 class="panel-title pull-left">Your Info</h3>
+							<br> <br>
+
+							<div class="mb-2">
+								<label for="Name">Name</label> <input type="text"
+									th:field="*{name}" class="form-control" id="Name"
+									autofocus="true">
 							</div>
+
+							<div>
+								<span class="errors-notification"
+									th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
+							</div>
+							<div class="mb-2">
+								<label for="Email">Email</label> <input type="text"
+									th:field="*{email}" class="form-control" id="Email"
+									autofocus="true">
+							</div>
+
+							<div class="mb-2">
+								<label for="Address">Address</label> <input type="text"
+									th:field="*{address}" class="form-control" id="Address"
+									autofocus="true" />
+							</div>
+
+							<input type="hidden" th:field="*{id}"> <input
+								type="hidden" th:field="*{password}">
+
 						</div>
 					</div>
-		
-					<div class="col-md-2">
-						<button class="btn btn-info profile-edit-btn mt-2 text-light" type="submit">
-							<i class="fa fa-fw fa-check" aria-hidden="true"></i> Update
-						</button>
-						<a th:href="@{/users/} + ${user.id}"
-							class="btn btn-success profile-edit-btn mt-2 text-light ">
-							<i class="fa fa-fw fa-times" aria-hidden="true"></i> Cancel
-						</a>
-					</div>
-	
+				</div>
+
+				<div class="col-md-2">
+					<button class="btn btn-info profile-edit-btn mt-2 text-light"
+						type="submit">
+						<i class="fa fa-fw fa-check" aria-hidden="true"></i> Update
+					</button>
+					<a th:href="@{/users/} + ${user.id}"
+						class="btn btn-success profile-edit-btn mt-2 text-light "> <i
+						class="fa fa-fw fa-times" aria-hidden="true"></i> Cancel
+					</a>
+				</div>
 			</div>
-			
 		</form>
-	</div>
+		<br />
+		<div class="profile-changepw">
+			<button id="myBtn" class="btn">
+				<i class="fa fa-fw fa-check" aria-hidden="true"></i> Change Password
+			</button>
+			<!-- The Modal -->
+			<div id="myModal" class="modal">
+
+				<!-- Modal content -->
+				<div class="modal-content">
+					<span class="close">&times;</span>
+					<form th:action="@{/changePassProcess}" class="form-container"
+						method="Post">
+						<h1>Change Password</h1>
+
+						<input class="form-control" type="password"
+							placeholder="Enter Old Password" name="oldPass" required><br/>
+						<input class="form-control" type="password"
+							placeholder="Enter New Password" name="newPass" required><br/>
+						<input class="form-control" type="password"
+							placeholder="Enter Confirm Password" name="confirmPass" required><br/>
+						<button type="submit" class="btn">Submit</button>
+					</form>
+				</div>
+				<script type="text/javascript" th:src="@{/assets/js/popupForm.js}"></script>
+			</div>
+		</div>
 </body>
 
 </html>

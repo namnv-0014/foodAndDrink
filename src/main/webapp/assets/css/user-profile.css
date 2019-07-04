@@ -49,6 +49,10 @@ body {
 	text-align: center;
 }
 
+.profile-changepw {
+	text-align: right;;
+}
+
 .profile-img img {
 	width: 70%;
 	height: 100%;
