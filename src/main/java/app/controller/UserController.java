@@ -22,10 +22,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.bind.annotation.RequestParam;	
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import app.bean.UserInfo;
@@ -71,13 +68,14 @@ public class UserController {
 
 	@PostMapping("/welcome")
 	public String welcome(@RequestParam("email") String usermail, @RequestParam("password") String password,
-			HttpServletRequest request, Model model) {
+			HttpServletRequest request, Model model, final RedirectAttributes redirectAttributes) {
 
 		User user = getUserService().findByEmailAndPassword(usermail, password.trim());
 		if (user != null) {
-			HttpSession session = request.getSession(true);
-			session.setAttribute("name", user.getName());
-			return "welcome";
+			HttpSession session = request.getSession();
+			redirectAttributes.addFlashAttribute("msg", "Welcome "+user.getName().toUpperCase()+"!");
+			session.setAttribute("currentUser", user.getId());
+			return "redirect:/";
 		} else {
 			model.addAttribute("error", login_error);
 		}
@@ -86,10 +84,11 @@ public class UserController {
 
 	@GetMapping("/logout")
 	public String logout(HttpServletRequest request) {
-		HttpSession session = request.getSession(false);
+		HttpSession session = request.getSession();
 		session.setAttribute("message", msg_logout);
+		session.removeAttribute("currentUser");
 		session.invalidate();
-		return "login";
+		return "redirect:login";
 	}
 
 	@GetMapping("users/{id}")
