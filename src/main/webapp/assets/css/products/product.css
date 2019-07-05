@@ -80,7 +80,6 @@ img {
   -webkit-flex-grow: 1;
       -ms-flex-positive: 1;
           flex-grow: 1; }
-
 .product-title, .price, .sizes, .colors {
   text-transform: UPPERCASE;
   font-weight: bold; }

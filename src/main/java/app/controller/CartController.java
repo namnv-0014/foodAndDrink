@@ -3,15 +3,12 @@ package app.controller;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -38,7 +35,7 @@ public class CartController {
 		ProductInfo product = new ProductInfo(productService.findById(productId));
 		List<CartItem> cart = new ArrayList<CartItem>();
 		if (session.getAttribute("cart") == null) {
-			cart.add(new CartItem(product, 1));
+			cart.add(new CartItem(product, quantity));
 		} else {
 			cart = (List<CartItem>) session.getAttribute("cart");
 			int index = this.exists(productId, cart);
@@ -51,7 +48,29 @@ public class CartController {
 		}
 		session.setAttribute("cart", cart);
 		session.setAttribute("totalCart", this.totalCart(cart));
-		return "redirect:index";
+		return "redirect:/cart/index";
+	}
+	
+	@GetMapping(value="/remove/{productId}") 
+	public String remove(@PathVariable("productId") Integer productId, HttpSession session) {
+		List<CartItem> cart = (List<CartItem>) session.getAttribute("cart");
+		int index = this.exists(productId, cart);
+		cart.remove(index);
+		session.setAttribute("cart", cart);
+		session.setAttribute("totalCart", this.totalCart(cart));
+		return "redirect:/cart/index";
+	}
+	
+	@GetMapping(value="/update") 
+	public String update(@RequestParam("productId") Integer productId, 
+			@RequestParam("quantity") Integer quantity,
+			HttpSession session) {
+		List<CartItem> cart = (List<CartItem>) session.getAttribute("cart");
+		int index = this.exists(productId, cart);
+		cart.get(index).setQuantity(quantity);
+		session.setAttribute("cart", cart);
+		session.setAttribute("totalCart", this.totalCart(cart));
+		return "redirect:/cart/index";
 	}
 	
 	private int exists(int productId, List<CartItem> cart) {

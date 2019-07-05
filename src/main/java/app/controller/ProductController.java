@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import app.bean.ProductInfo;
 import app.model.Category;
 import app.model.Product;
 import app.service.CategoryService;
@@ -68,7 +70,7 @@ public class ProductController {
 	
 	@GetMapping(value = "/{id}")
 	public String show(@PathVariable("id") int id, Model model) {
-		Product product= productService.findById(id);
+		ProductInfo product = new ProductInfo(productService.findById(id));
 		model.addAttribute("product", product);
 		return "products/product";
 	}

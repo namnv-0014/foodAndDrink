@@ -30,4 +30,8 @@ public class CartItem {
 		this.quantity = quantity;
 	}
 	
+	public float totalItem() {
+		return this.product.getPrice() * this.quantity;
+	}
+	
 }

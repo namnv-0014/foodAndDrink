@@ -71,7 +71,7 @@
 												th:text="'$'+ ${product.price}" />
 										</div>
 										<div class="col">
-											<a href="#" class="btn btn-success btn-block">Add to cart</a>
+											<a th:href="@{/cart/add(productId=${product.id}, quantity=1)}" class="btn btn-success btn-block">Add to cart</a>
 										</div>
 									</div>
 								</div>

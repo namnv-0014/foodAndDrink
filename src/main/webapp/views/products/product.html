@@ -46,9 +46,9 @@
 							<h4 class="price">
 								<span th:text="'$'+ ${product.price}" />
 							</h4>
-							<form th:action="@{/cart/add(productId=${productId}, quantity=${quantity})}">
+							<form id="form-add" th:action="@{/cart/add(productId=${productId}, quantity=${quantity})}">
 								<input th:name="productId" type="hidden" th:value="${product.id}"/>
-								<input type="number" class="quantity" th:name="quantity" />
+								<input type="text" class="quantity" th:name="quantity" />
 								<button class="add-to-cart btn btn-default"/>add to cart</button>
 							</form>
 						</div>
