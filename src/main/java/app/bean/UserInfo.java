@@ -1,10 +1,6 @@
 package app.bean;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
-import app.dao.UserDAO;
 import app.model.User;
-import app.service.UserService;
 
 public class UserInfo {
 

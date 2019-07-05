@@ -29,6 +29,7 @@ import app.bean.UserInfo;
 import app.model.User;
 import app.service.UserService;
 import validate.UserValidation;
+import validate.UserValidationEdit;
 
 @Controller
 @PropertySource("classpath:messages.properties")
@@ -47,6 +48,10 @@ public class UserController {
 	private String msg_deleted;
 	@Value("${messages.deletefail}")
 	private String msg_deletefail;
+	@Value("${messages.updated}")
+	private String msg_updated;
+	@Value("${messages.updatefail}")
+	private String msg_updatefail;
 	@Value("${messages.danger}")
 	private String danger;
 	@Value("${messages.error}")
@@ -93,7 +98,7 @@ public class UserController {
 
 	@GetMapping("users/{id}")
 	public String show(@PathVariable("id") int id, Model model) {
-		logger.info("detail student");
+		logger.info("detail user");
 		User user = userService.findById(id);
 		if (user != null) {
 			model.addAttribute("user", user);
@@ -106,14 +111,14 @@ public class UserController {
 	}
 
 	@PostMapping("/registerProcess")
-	public String register(@ModelAttribute("userInfo") UserInfo userInfo, BindingResult result, Model model) {
+	public String register(@ModelAttribute("userInfo") UserInfo userInfo, BindingResult result, Model model, final RedirectAttributes redirectAttributes) {
 		UserValidation validation = new UserValidation();
 		validation.validate(userInfo, result);
 		if (result.hasErrors()) {
 			return "register";
 		}
 		if (userService.isEmailExist(userInfo.getEmail())) {
-			model.addAttribute("errorMessage", email_already);
+			redirectAttributes.addFlashAttribute("errorMessage", email_already);
 			return "register";
 		}
 		userService.createUser(userInfo.convertToUser());
@@ -160,4 +165,36 @@ public class UserController {
 		return "redirect:/users";
 	}
 	
+	@GetMapping("users/{id}/edit")
+	public String editUser(@PathVariable("id") Integer id, Model model) {
+		logger.info("edit user");
+		User user = userService.findById(id);
+		if (user != null) {
+			model.addAttribute("user", user);
+			return "users/edit";
+		}
+		model.addAttribute("css", danger);
+		model.addAttribute("msg", msg_nouserfound);
+		return "error";
+	}
+	
+	@PostMapping("/update")
+	public String editUser(@ModelAttribute("user") User userView, BindingResult result, Model model, final RedirectAttributes redirectAttributes) {
+		logger.info("edit user");
+		UserValidationEdit validation = new UserValidationEdit();
+		validation.validate(userView, result);
+		if (result.hasErrors()) {
+			return "users/edit";
+		}
+		User user = userService.findById(userView.getId());
+		if (userService.updateUser(userView, user)) {
+			redirectAttributes.addFlashAttribute("css", success);
+			redirectAttributes.addFlashAttribute("msg", msg_updated);
+		} else {
+			redirectAttributes.addFlashAttribute("css", error);
+			redirectAttributes.addFlashAttribute("msg", msg_updatefail);
+		}
+		return "redirect:/users/" + user.getId();
+	}
+
 }
