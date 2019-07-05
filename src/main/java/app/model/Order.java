@@ -14,6 +14,42 @@ public class Order {
 	private User user;
 	private List<OrderProduct> orderProducts;
 	
+	public Order() {
+		
+	}
+	
+	public Order(int id, 
+			String name, 
+			String address, 
+			String phone, 
+			Float total, 
+			String note, 
+			User user) {
+		this.id = id;
+		this.nameReceiver = name;
+		this.address = address;
+		this.phone = phone;
+		this.total = total;
+		this.note = note;
+		this.status = 0;
+		this.user = user;
+	}
+	
+	public Order(int id, 
+			String phone, 
+			Float total, 
+			String note, 
+			User user) {
+		this.id = id;
+		this.nameReceiver = user.getName();
+		this.address = user.getAddress();
+		this.phone = phone;
+		this.total = total;
+		this.note = note;
+		this.status = 0;
+		this.user = user;
+	}
+	
 	public Integer getId() {
 		return id;
 	}

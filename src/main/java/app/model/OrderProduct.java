@@ -1,5 +1,7 @@
 package app.model;
 
+import app.bean.CartItem;
+
 public class OrderProduct {
 	
 	private Integer id;
@@ -7,6 +9,10 @@ public class OrderProduct {
 	private Float price;
 	private Order order;
 	private Product product;
+	
+	public OrderProduct() {
+		
+	}
 	
 	public Integer getId() {
 		return id;
