@@ -13,5 +13,5 @@ public interface UserDAO extends BaseDAO<Integer, User> {
 	User findUserByEmail(String email);
 
 	boolean checkEmail(String email);
-	
+
 }

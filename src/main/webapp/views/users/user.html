@@ -19,11 +19,8 @@
 		<form method="post">			
 			<div class="row">
 				<div class="col-md-4">
-					<div class="profile-img">
+					<div class="profile-img mb-3">
 						<img th:src="${user.avatar}" alt="" />
-						<div class="file btn btn-lg btn-primary">
-							Change Photo <input type="file" name="file" />
-						</div>
 					</div>
 
 					<div class="profile-work">
@@ -121,9 +118,8 @@
 					</div>
 				</div>
 				<div class="col-md-2">
-					<input type="submit" class="profile-edit-btn" name="btnAddMore"
-						value="Edit Profile" />
-						
+					<a th:href="${user.id} + '/edit'" class="btn btn-info profile-edit-btn mt-2 text-light">Edit Profile</a>
+					<a th:href="@{/}" class="btn btn-secondary profile-edit-btn mt-2 text-light">Change pass</a>
 					<a th:href="@{/}" class="btn btn-success profile-edit-btn mt-2 text-light">Homepage</a>
 				</div>
 			</div>

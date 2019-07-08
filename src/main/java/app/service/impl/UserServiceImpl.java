@@ -125,4 +125,19 @@ public class UserServiceImpl extends BaseServiceImpl implements UserService {
 		}
 	}
 
+	@Override
+	public boolean updateUser(User userView, User user) {
+		try {
+			user.setAvatar(userView.getAvatar());
+			user.setAddress(userView.getAddress());
+			user.setEmail(userView.getEmail());
+			user.setName(userView.getName());
+			User userNew = getUserDAO().saveOrUpdate(user);
+			return userNew != null;
+		} catch (Exception e) {
+			LOGGER.error(e);
+			throw e;
+		}
+	}
+
 }

@@ -1,10 +1,11 @@
 package app.dao.impl;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import app.dao.GenericDAO;
 import app.dao.UserDAO;
-import app.model.Product;
 import app.model.User;
 
 public class UserDAOImpl extends GenericDAO<Integer, User> implements UserDAO {
