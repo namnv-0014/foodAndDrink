@@ -40,9 +40,9 @@ public class CartController {
 			cart = (List<CartItem>) session.getAttribute("cart");
 			int index = this.exists(productId, cart);
 			if (index == -1) {
-				cart.add(new CartItem(product, 1));
+				cart.add(new CartItem(product, quantity));
 			} else {
-				int quantityInCart = cart.get(index).getQuantity() + 1;
+				int quantityInCart = cart.get(index).getQuantity() + quantity;
 				cart.get(index).setQuantity(quantityInCart);
 			}
 		}
@@ -82,7 +82,7 @@ public class CartController {
 		return -1;
 	}
 	
-	private float totalCart(List<CartItem> items) {
+	public static float totalCart(List<CartItem> items) {
 		float total = 0;
 		for(CartItem item : items) {
 			total += item.getProduct().getPrice() * item.getQuantity();

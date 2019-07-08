@@ -13,5 +13,11 @@
 	<bean id="CategoryDAO" class="app.dao.impl.CategoryDAOImpl">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	<bean id="OrderDAO" class="app.dao.impl.OrderDAOImpl">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="OrderProductDAO" class="app.dao.impl.OrderProductDAOImpl">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 	
 </beans> 
